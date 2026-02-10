@@ -74,7 +74,8 @@ export function useSupabaseRoom(roomId: string | null, username: string) {
               ...prev,
               roomId: roomId,
               story: { title: newRoom.story_title || '', description: newRoom.story_description || '' },
-              phase: newRoom.phase || prev.phase
+              phase: newRoom.phase || prev.phase,
+              votes: newRoom.phase === GamePhase.VOTING ? {} : prev.votes
             }));
           }
         }

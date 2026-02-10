@@ -4,6 +4,9 @@
 
 A real-time collaborative planning poker application with AI-powered teammates. Users can join rooms, vote on stories using Fibonacci cards, and see real-time results with statistics.
 
+**Repository:** https://github.com/datadope-io/SCRUM-Poker-planning
+**Live App:** https://datadoio.io.github.io/SCRUM-Poker-planning/
+
 **Key Features:**
 - Multi-room real-time collaboration via Supabase
 - AI teammates with different personas (Senior Dev, Junior Dev, QA Lead, Product Manager)
@@ -201,11 +204,11 @@ Username prompt component that:
 ### Setting Up a New Development Environment
 
 1. **Clone and install:**
-   ```bash
-   git clone <repository>
-   cd poker
-   npm install
-   ```
+    ```bash
+    git clone git@github.com:datadope-io/SCRUM-Poker-planning.git
+    cd poker
+    npm install
+    ```
 
 2. **Configure environment:**
    ```bash
@@ -391,15 +394,22 @@ Test with 2+ browsers on the same room URL:
 
 ## Known Issues & Limitations
 
-1. **Tailwind CDN:** Using CDN in development (should use PostCSS for production)
-2. **Chart warnings:** Width/height warnings in console (cosmetic, charts still work)
-3. **No persistence:** Game data not saved to database history (could be added)
-4. **No authentication:** Anonymous users only (could be added)
-5. **Browser support:** Requires modern browser with WebSocket support
+1. **Supabase credentials hardcoded:** Currently hardcoded in `.github/workflows/deploy.yml` for deployment. Should use GitHub Secrets for security.
+2. **Tailwind CDN:** Using CDN in production (should use PostCSS for production builds)
+3. **Chart warnings:** Width/height warnings in console (cosmetic, charts still work)
+4. **No persistence:** Game data not saved to database history (could be added)
+5. **No authentication:** Anonymous users only (could be added)
+6. **Browser support:** Requires modern browser with WebSocket support
 
 ---
 
 ## Deployment Notes
+
+### Repository
+
+- **GitHub:** https://github.com/datadope-io/SCRUM-Poker-planning
+- **Branch:** main
+- **Live App:** https://datadoio.io.github.io/SCRUM-Poker-planning/
 
 ### Environment Variables Required
 
@@ -409,18 +419,31 @@ VITE_SUPABASE_ANON_KEY=your-anon-key
 VITE_GEMINI_API_KEY=your-gemini-api-key  # Optional
 ```
 
+### Current Supabase Configuration
+
+- **Project:** https://iyrelkorfouackwhxhde.supabase.co
+- **URL:** https://iyrelkorfouackwhxhde.supabase.co
+- **Anon Key:** sb_publishable_ZrTJbxVzwgg1kB-Vp8yayQ_p-SeewqP
+
+### GitHub Actions Deployment
+
+The app is automatically deployed to GitHub Pages via GitHub Actions:
+
+- **Workflow:** `.github/workflows/deploy.yml`
+- **Trigger:** Push to `main` branch
+- **Base Path:** Configured in `vite.config.ts` for GitHub Pages
+
+```bash
+# Manual deployment
+git push origin main
+```
+
 ### Build Output
 
 ```bash
 npm run build
 # Output in dist/
 ```
-
-### Recommended Deployment Platforms
-
-- **Vercel** - Simplest for frontend
-- **Netlify** - Good alternative
-- **Render** - Full-stack support
 
 ---
 
