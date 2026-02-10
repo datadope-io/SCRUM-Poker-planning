@@ -128,6 +128,7 @@ export default function App() {
         <StoryPanel
           story={roomState.story}
           phase={roomState.phase}
+          players={roomState.players}
           onUpdateStory={updateStory}
           onStartVoting={() => updatePhase(GamePhase.VOTING)}
           onReset={resetGame}

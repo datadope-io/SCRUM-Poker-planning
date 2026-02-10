@@ -1,10 +1,11 @@
 import { useState } from 'react';
-import { GamePhase } from '../types.jsx';
-import { RefreshCw, Play, FileText, ChevronDown, ChevronUp, RotateCcw } from 'lucide-react';
+import { GamePhase, UserType } from '../types.jsx';
+import { RefreshCw, Play, FileText, ChevronDown, ChevronUp, RotateCcw, Users, Bot } from 'lucide-react';
 
 export function StoryPanel({
   story,
   phase,
+  players,
   onUpdateStory,
   onStartVoting,
   onReset,
@@ -16,6 +17,9 @@ export function StoryPanel({
   const isVoting = phase === GamePhase.VOTING;
   const isRevealed = phase === GamePhase.REVEALED;
   const hasContent = story.title.trim().length > 0 || story.description.trim().length > 0;
+
+  const humanPlayers = players.filter(p => p.type === UserType.HUMAN);
+  const aiPlayers = players.filter(p => p.type === UserType.AI);
 
   return (
     <div className="bg-slate-800 p-6 rounded-xl shadow-lg border border-slate-700 w-full max-w-2xl mx-auto mb-8 transition-all">
@@ -84,8 +88,68 @@ export function StoryPanel({
                      )}
                   </div>
              )}
-         </div>
-      </div>
+          </div>
+       </div>
+
+      {phase === GamePhase.SETUP && players.length > 0 && (
+        <div className="mt-6 pt-6 border-t border-slate-700 animate-flip-in">
+          <div className="flex items-center justify-between mb-4">
+            <h3 className="text-sm font-semibold text-slate-400 flex items-center gap-2">
+              <Users size={16} />
+              Players Connected ({players.length})
+            </h3>
+          </div>
+
+          <div className="space-y-2">
+            {humanPlayers.length > 0 && (
+              <div className="space-y-2">
+                {humanPlayers.map(player => (
+                  <div
+                    key={player.id}
+                    className="flex items-center gap-3 p-3 bg-slate-900/50 rounded-lg border border-slate-700/50"
+                  >
+                    <img
+                      src={player.avatarUrl}
+                      alt={player.name}
+                      className="w-8 h-8 rounded-full object-cover"
+                    />
+                    <div className="flex-1">
+                      <p className="text-sm font-medium text-white">{player.name}</p>
+                      <p className="text-xs text-emerald-400">Connected</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+
+            {aiPlayers.length > 0 && (
+              <div className="space-y-2 mt-4 pt-4 border-t border-slate-700/50">
+                <p className="text-xs text-slate-500 uppercase tracking-wider">AI Teammates</p>
+                {aiPlayers.map(player => (
+                  <div
+                    key={player.id}
+                    className="flex items-center gap-3 p-3 bg-indigo-900/20 rounded-lg border border-indigo-700/30"
+                  >
+                    <div className="relative w-8 h-8 rounded-full bg-indigo-700 flex items-center justify-center">
+                      <Bot size={16} className="text-indigo-200" />
+                    </div>
+                    <div className="flex-1">
+                      <p className="text-sm font-medium text-white">{player.name}</p>
+                      <p className="text-xs text-indigo-400">{player.persona || 'AI'}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+
+            {players.length === 0 && (
+              <div className="text-center py-6 text-slate-500 text-sm">
+                No players connected yet. Share the room link to invite others!
+              </div>
+            )}
+          </div>
+        </div>
+      )}
 
       {phase === GamePhase.SETUP && showDetails && (
         <div className="mt-6 pt-6 border-t border-slate-700 animate-flip-in">
