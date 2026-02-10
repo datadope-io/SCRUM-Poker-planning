@@ -4,7 +4,8 @@ export function Card({
   revealed = true,
   onClick,
   disabled = false,
-  isSmall = false
+  isSmall = false,
+  isHinted = false
 }) {
   const baseClasses = "relative flex items-center justify-center font-bold rounded-lg shadow-lg cursor-pointer transition-all duration-200 border-2 select-none";
   const sizeClasses = isSmall
@@ -17,7 +18,10 @@ export function Card({
 
   const hiddenClasses = "bg-indigo-900 border-indigo-700 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]";
 
-  const isFaceDown = !revealed && value !== null;
+  const hintClasses = "bg-indigo-500/30 border-indigo-400 text-white backdrop-blur-sm";
+
+  const isFaceDown = !revealed && !isHinted && value !== null;
+  const cardClasses = isHinted ? hintClasses : (isFaceDown ? hiddenClasses : stateClasses);
 
   return (
     <div
@@ -25,8 +29,9 @@ export function Card({
       className={`
         ${baseClasses}
         ${sizeClasses}
-        ${isFaceDown ? hiddenClasses : stateClasses}
-        ${disabled ? 'opacity-50 cursor-not-allowed hover:transform-none' : ''}
+        ${cardClasses}
+        ${disabled && !isHinted ? 'opacity-50 cursor-not-allowed hover:transform-none' : ''}
+        ${isHinted ? 'ring-2 ring-indigo-400 ring-offset-2 ring-offset-slate-900' : ''}
       `}
     >
       {isFaceDown ? (

@@ -147,6 +147,7 @@ export default function App() {
                                 player={player}
                                 vote={roomState.votes[player.id]}
                                 phase={roomState.phase}
+                                isCurrentUser={currentUser?.id === player.id}
                             />
                         ))}
                     </div>

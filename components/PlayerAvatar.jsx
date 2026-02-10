@@ -2,18 +2,25 @@ import { Bot } from 'lucide-react';
 import { Card } from './Card.jsx';
 import { GamePhase, UserType } from '../types.jsx';
 
-export function PlayerAvatar({ player, vote, phase }) {
+export function PlayerAvatar({ player, vote, phase, isCurrentUser = false }) {
   const hasVoted = !!vote;
+  const showHint = isCurrentUser && phase === GamePhase.VOTING && hasVoted;
 
   return (
     <div className="flex flex-col items-center gap-3 relative group">
       <div className="h-24 md:h-36 flex items-end mb-2">
         {hasVoted ? (
-          <div className="animate-flip-in">
+          <div className="animate-flip-in relative">
+             {showHint && (
+               <div className="absolute -top-2 left-1/2 -translate-x-1/2 bg-indigo-600 text-white text-xs px-2 py-1 rounded-full z-10">
+                 Your vote
+               </div>
+             )}
              <Card
                value={vote.value}
-               revealed={phase === GamePhase.REVEALED}
+               revealed={phase === GamePhase.REVEALED || showHint}
                disabled={true}
+               isHinted={showHint}
              />
           </div>
         ) : (
