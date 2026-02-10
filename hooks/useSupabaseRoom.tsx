@@ -91,16 +91,22 @@ export function useSupabaseRoom(roomId: string | null, username: string) {
         (payload) => {
           if (payload.eventType === 'INSERT') {
             const newPlayer = payload.new as any;
-            setRoomState(prev => ({
-              ...prev,
-              players: [...prev.players, {
-                id: newPlayer.id,
-                name: newPlayer.name,
-                type: newPlayer.type as UserType,
-                avatarUrl: newPlayer.avatar_url,
-                persona: newPlayer.persona
-              }]
-            }));
+            setRoomState(prev => {
+              // Prevent duplicates: check if player already exists
+              if (prev.players.find(p => p.id === newPlayer.id)) {
+                return prev;
+              }
+              return {
+                ...prev,
+                players: [...prev.players, {
+                  id: newPlayer.id,
+                  name: newPlayer.name,
+                  type: newPlayer.type as UserType,
+                  avatarUrl: newPlayer.avatar_url,
+                  persona: newPlayer.persona
+                }]
+              };
+            });
           } else if (payload.eventType === 'DELETE') {
             const deletedId = payload.old.id;
             setRoomState(prev => ({
@@ -199,9 +205,15 @@ export function useSupabaseRoom(roomId: string | null, username: string) {
       const humanPlayers = players.filter(p => p.type === UserType.HUMAN);
       if (!humanPlayers.find(p => p.id === userId)) {
         await joinRoom(rid, userId, userData);
+        // Add current user to local state immediately
+        players.push(userData);
       }
 
       setRoomState(prev => ({ ...prev, players }));
+    } else {
+      // No players in room yet, join immediately and add to local state
+      await joinRoom(rid, userId, userData);
+      setRoomState(prev => ({ ...prev, players: [userData] }));
     }
 
     const { data: votesData } = await supabase
