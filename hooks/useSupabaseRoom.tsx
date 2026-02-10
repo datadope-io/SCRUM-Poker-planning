@@ -153,6 +153,11 @@ export function useSupabaseRoom(roomId: string | null, username: string) {
   }, [roomId, username]);
 
   const loadRoomData = async (rid: string, userId: string, userData: Player) => {
+    if (!supabase) {
+      console.error('Supabase client not initialized. Check VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY');
+      return;
+    }
+
     const { data: roomData } = await supabase
       .from('rooms')
       .select('*')

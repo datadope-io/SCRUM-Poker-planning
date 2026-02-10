@@ -64,10 +64,43 @@ export default function App() {
     return <UsernameModal onSave={saveUsername} onClose={() => {}} />;
   }
 
+  // Check if Supabase is configured
   if (!currentUser || !roomId) {
     return (
       <div className="min-h-screen bg-poker-bg flex items-center justify-center">
         <div className="text-white text-xl">Loading...</div>
+      </div>
+    );
+  }
+
+  // Show configuration error if Supabase not initialized
+  if (!roomState.roomId && currentUser) {
+    return (
+      <div className="min-h-screen bg-poker-bg flex flex-col items-center justify-center p-8">
+        <div className="bg-slate-800 border border-red-500 rounded-xl p-8 max-w-md text-center">
+          <h2 className="text-2xl font-bold text-red-400 mb-4">⚠️ Configuration Error</h2>
+          <p className="text-slate-300 mb-4">
+            Supabase credentials are not configured. The app cannot function without database access.
+          </p>
+          <p className="text-slate-400 text-sm mb-6">
+            Please ensure the following GitHub Actions secrets are set in the repository:
+          </p>
+          <ul className="text-left text-left text-sm text-slate-400 space-y-2 mb-6">
+            <li>• <code className="bg-slate-700 px-2 py-1 rounded">VITE_SUPABASE_URL</code></li>
+            <li>• <code className="bg-slate-700 px-2 py-1 rounded">VITE_SUPABASE_ANON_KEY</code></li>
+          </ul>
+          <p className="text-slate-500 text-xs">
+            Go to: <a href="https://github.com/datadope-io/SCRUM-Poker-planning/settings/secrets/actions" className="text-indigo-400 hover:text-indigo-300 underline" target="_blank" rel="noopener noreferrer">
+              https://github.com/datadope-io/SCRUM-Poker-planning/settings/secrets/actions
+            </a>
+          </p>
+          <button
+            onClick={() => window.location.reload()}
+            className="px-6 py-2 bg-indigo-600 hover:bg-indigo-500 text-white rounded-lg transition-colors"
+          >
+            Reload
+          </button>
+        </div>
       </div>
     );
   }
