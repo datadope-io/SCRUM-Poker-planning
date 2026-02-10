@@ -1,0 +1,5 @@
+{
+  "name": "Gemini Planning Poker",
+  "description": "A smart Scrum Planning Poker application powered by Gemini. Collaborate with AI teammates who analyze your stories and provide estimates with reasoning.",
+  "requestFramePermissions": []
+}
