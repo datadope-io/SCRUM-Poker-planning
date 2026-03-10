@@ -156,17 +156,16 @@ export default function App() {
                         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10">
                             <button
                                 onClick={() => updatePhase(GamePhase.REVEALED)}
-                                disabled={!allVoted}
                                 className={`
                                     flex items-center gap-2 px-8 py-4 rounded-full font-bold text-lg shadow-2xl transition-all transform
                                     ${allVoted
                                         ? 'bg-indigo-600 hover:bg-indigo-500 hover:scale-110 text-white animate-bounce-subtle'
-                                        : 'bg-slate-700 text-slate-400 cursor-not-allowed opacity-80'
+                                        : 'bg-indigo-500 hover:bg-indigo-400 text-white'
                                     }
                                 `}
                             >
                                 <PlayCircle size={24} />
-                                {allVoted ? 'Reveal Cards' : 'Waiting...'}
+                                {allVoted ? 'Reveal Cards' : `Reveal Cards (${Object.keys(roomState.votes).length}/${roomState.players.length})`}
                             </button>
                         </div>
                     )}
